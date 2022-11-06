@@ -3,31 +3,70 @@ import { Component } from 'react';
 // import PokemonInfo from './Pokemon/PokemonInfo';
 // import { ToastContainer } from 'react-toastify';
 // import ModalTest from './ModalTest/ModalTest';
+// import {Container} from './App.styled'
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
-import { Loader } from './Loader/Loader';
-import { Button } from './Button/Button';
-import { Modal } from './Modal/Modal';
+import { ToastContainer } from 'react-toastify';
+
+import { LoadMore } from './Button/Button';
+import { Container } from './App.styled';
 
 export class App extends Component {
   state = {
-    // pokemonName: '',
+    query: '',
+    page: 1,
+    loadMore: false,
   };
 
-  // handleFormSubmit = pokemonName => {
-  //   this.setState({ pokemonName });
-  // };
+  getQuery = newQuery => {
+    this.setState(prevState => ({
+      query: newQuery,
+      page: 1,
+    }));
+  };
+  loadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
+
+  onLoadMore = () => {
+    this.setState({ loadMore: true });
+  };
+  offLoadMore = () => {
+    this.setState({ loadMore: false });
+  };
 
   render() {
+    const { query, page, loadMore } = this.state;
     return (
       <>
-        <Searchbar />
-        <ImageGallery />
-        <ImageGalleryItem />
-        <Loader />
-        <Button />
-        <Modal />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+
+        <ToastContainer />
+        <Searchbar onSubmit={this.getQuery} />
+
+        <ImageGallery
+          query={query}
+          page={page}
+          onLoad={this.onLoadMore}
+          offLoad={this.offLoadMore}
+        />
+        {loadMore && (
+          <Container>
+            <LoadMore onClick={this.loadMore}>Load More</LoadMore>
+          </Container>
+        )}
       </>
     );
   }
