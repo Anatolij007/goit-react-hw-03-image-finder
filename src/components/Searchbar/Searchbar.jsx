@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { FcSearch } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import { Header, FormSearch, Button, Span, Input } from './Searchbar.styled';
-
+import PropTypes from 'prop-types';
 const initialValues = {
   query: '',
 };
@@ -37,4 +37,8 @@ export const Searchbar = ({ onSubmit }) => {
       </Formik>
     </Header>
   );
+};
+
+Searchbar.prototype = {
+  onSubmit: PropTypes.func,
 };

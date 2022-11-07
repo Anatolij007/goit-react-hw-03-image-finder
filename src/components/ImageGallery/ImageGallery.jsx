@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import { fetchImages } from 'services/api';
 import { Gallery, ModalImage, Search } from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
@@ -102,3 +102,10 @@ export class ImageGallery extends Component {
     );
   }
 }
+
+ImageGalleryItem.prototype = {
+  query: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
+  offLoad: PropTypes.func,
+  onLoad: PropTypes.func,
+};
