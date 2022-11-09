@@ -40,6 +40,22 @@ export class ImageGallery extends Component {
       }
     }
 
+    if (prevQuery !== nextQuery) {
+      this.setState({ isLoader: true });
+      try {
+        const response = await fetchImages(nextQuery, nextPage);
+        this.setState({ gallery: response.hits });
+        if (!response.hits.length || response.hits.length < 12) {
+          this.props.offLoad();
+          toast('Колекція закінчилась');
+        }
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ isLoader: false });
+      }
+    }
+
     if (prevQuery === nextQuery && prevPage !== nextPage) {
       this.setState({ isLoader: true });
       try {
